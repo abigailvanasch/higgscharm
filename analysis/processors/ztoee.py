@@ -145,6 +145,16 @@ class ZToEEProcessor(processor.ProcessorABC):
             selection_manager.add(selection, eval(mask))
         # run over each category
         categories = event_selection["categories"]
+
+        if dataset == "ZH_Hto2C_Zto2L" or dataset == "ZH_Hto2C_Zto2L_ext":
+            elek = events.GenPart[(events.GenPart.pdgId == 11)]
+            antielek = events.GenPart[(events.GenPart.pdgId == -11)]
+            has_elek_antielek = (ak.num(elek, axis=1) >= 1) & (ak.num(antielek, axis=1) >= 1)
+
+            selection_manager.add("has_elek_antielek", has_elek_antielek)
+            categories['ztoee'].append("has_elek_antielek")
+
+        
         for category, category_cuts in categories.items():
             # get selection mask by category
             category_mask = selection_manager.all(*category_cuts)
