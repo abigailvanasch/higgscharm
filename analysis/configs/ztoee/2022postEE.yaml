@@ -6,43 +6,44 @@ object_selection:
   muons:
     field: events.Muon
     cuts:
-      pt: events.Muon.pt > 27
+      pt: events.Muon.pt > 15
       abseta: np.abs(events.Muon.eta) < 2.4
-      dxy: events.Muon.dxy < 0.5
-      dz: events.Muon.dz < 1
-      sip3d: events.Muon.sip3d < 4
+      #dxy: events.Muon.dxy < 0.5
+      #dz: events.Muon.dz < 1
+      #sip3d: events.Muon.sip3d < 4
       muon_id: tight
       muon_iso: tight
   electrons:
     field: events.Electron
     cuts:
-      pt: events.Electron.pt > 30
+      pt: events.Electron.pt > 10
       abseta: np.abs(events.Electron.eta) < 2.4
       electron_id: wp80iso
-      electron_muon_dr: delta_r_mask(events.Electron, objects['muons'], 0.4)
+      #electron_muon_dr: delta_r_mask(events.Electron, objects['muons'], 0.4)
   jets:
     field: events.Jet
     cuts:
       min_pt: events.Jet.pt > 20
       abseta: np.abs(events.Jet.eta) < 2.4
       jet_id: tightlepveto
-      jet_muon_dr: delta_r_mask(events.Jet, objects['muons'], 0.4)
-      jet_electron_dr: delta_r_mask(events.Jet, objects['electrons'], 0.4)
+      #jet_muon_dr: delta_r_mask(events.Jet, objects['muons'], 0.4)
+      #jet_electron_dr: delta_r_mask(events.Jet, objects['electrons'], 0.4)
   dielectrons:
     field: select_dielectrons
     cuts:
-      dr: LorentzVector.delta_r(objects['dielectrons'].l1, objects['dielectrons'].l2) > 0.02
+      #dr: LorentzVector.delta_r(objects['dielectrons'].l1, objects['dielectrons'].l2) > 0.02
       opp_charge: objects['dielectrons'].l1.charge * objects['dielectrons'].l2.charge < 0
-      mass_window: (objects['dielectrons'].z.mass > 60.0) & (objects['dielectrons'].z.mass < 120.0)
+      mass_window: (objects['dielectrons'].z.mass > 20.0) & (objects['dielectrons'].z.mass < 120.0)
 event_selection:
   selections:
     atleast_one_goodvertex: events.PV.npvsGood > 0
     lumimask: get_lumi_mask(events, goldenjson)
     trigger: get_trigger_mask(events, hlt_paths)
     trigger_matching: get_trigger_match_mask(events, events.Electron, hlt_paths)
-    first_electron_pt: ak.firsts(objects['electrons'].pt) > 35
-    two_electrons: ak.num(objects['electrons']) == 2
-    one_z: ak.num(objects['dielectrons'].z) == 1
+    first_electron_pt: ak.firsts(objects['electrons'].pt) > 25
+    two_electrons: ak.num(objects['electrons']) >= 2
+    two_jets: ak.num(events.Jet,axis=1) >=2
+    #one_z: ak.num(objects['dielectrons'].z) == 1
   categories:
     base:
       - atleast_one_goodvertex
@@ -51,7 +52,8 @@ event_selection:
       - trigger_matching
       - first_electron_pt
       - two_electrons
-      - one_z
+      - two_jets
+      #- one_z
 histogram_config:
   add_syst_axis: true
   add_weight: true
@@ -66,7 +68,7 @@ histogram_config:
     dielectron_pt:
       type: Regular
       bins: 50
-      start: 30
+      start: 10
       stop: 300
       label: $p_T(ee)$ [GeV]
       expression: objects['dielectrons'].z.pt
@@ -87,14 +89,14 @@ histogram_config:
     leading_electron_pt:
       type: Regular
       bins: 50
-      start: 30
+      start: 10
       stop: 300
       label: $p_T(e_1)$ [GeV]
       expression: objects['dielectrons'].l1.pt
     subleading_electron_pt:
       type: Regular
       bins: 50
-      start: 30
+      start: 10
       stop: 300
       label: $p_T(e_2)$ [GeV]
       expression: objects['dielectrons'].l2.pt
@@ -115,7 +117,7 @@ histogram_config:
     electron_pt:
       type: Regular
       bins: 50
-      start: 30
+      start: 10
       stop: 300
       label: $p_T(e)$ [GeV]
       expression: objects['electrons'].pt
