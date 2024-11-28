@@ -45,6 +45,7 @@ class Plotter:
             "tt": "#94a4a2",
             "Single Top": "#bd1f01",
             "Diboson": "#ffa90e",
+            "ZHcc": "#832db6",
         }
 
     def get_histogram(
