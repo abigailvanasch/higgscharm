@@ -146,6 +146,17 @@ class ZToMuMuProcessor(processor.ProcessorABC):
 
         # run over each category
         categories = event_selection["categories"]
+
+        if dataset == "ZH_Hto2C_Zto2L" or dataset == "ZH_Hto2C_Zto2L_ext":
+            muons = events.GenPart[(events.GenPart.pdgId == 13)]
+            antimuons = events.GenPart[(events.GenPart.pdgId == -13)]
+            has_muon_antimuon = (ak.num(muons, axis=1) >= 1) & (ak.num(antimuons, axis=1) >= 1)
+
+            selection_manager.add("has_muon_antimuon", has_muon_antimuon)
+            categories['ztomumu'].append("has_muon_antimuon")
+
+
+        
         for category, category_cuts in categories.items():
             # get selection mask by category
             category_mask = selection_manager.all(*category_cuts)
