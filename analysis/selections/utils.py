@@ -87,7 +87,6 @@ def select_dijet(objects, key):
             "eta": objects[key].eta,
             "phi": objects[key].phi,
             "mass": objects[key].mass,
-            "charge": objects[key].charge,
         },
         with_name="PtEtaPhiMCandidate",
         behavior=candidate.behavior,
