@@ -66,6 +66,13 @@ class ObjectSelector:
                 f"'muons' object has not been defined!"
             )
         self.objects["dimuons"] = select_dileptons(self.objects, "muons")
+
+     def select_dijets(self):
+        if "jets" not in self.objects:
+            raise ValueError(
+                f"'jets' object has not been defined!"
+            )
+        self.objects["dijets"] = select_dijet(self.objects, "jets")
         
         
     def select_dielectrons(self):
