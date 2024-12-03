@@ -71,6 +71,13 @@ histogram_config:
       stop: 150
       label: $m(\mu\mu)$ [GeV]
       expression: objects['dimuons'].z.mass
+    dijet_mass:
+      type: Regular
+      bins: 300
+      start: 0
+      stop: 300
+      label: $m(jj)$ [GeV]
+      expression: objects['dijets'].H.mass
     dimuon_pt:
       type: Regular
       bins: 50
@@ -78,6 +85,13 @@ histogram_config:
       stop: 300
       label: $p_T(\mu\mu)$ [GeV]
       expression: objects['dimuons'].z.pt
+    dijet_pt:
+      type: Regular
+      bins: 100
+      start: 20
+      stop: 300
+      label: $p_T(jj)$ [GeV]
+      expression: objects['dijets'].H.pt
     dimuon_dr:
       type: Regular
       bins: 50
@@ -244,8 +258,12 @@ histogram_config:
   layout: 
     dimuon_mass: 
       - dimuon_mass
+    dijet_mass: 
+      - dijet_mass
     dimuon_pt: 
       - dimuon_pt
+    dijet_pt: 
+      - dijet_pt
     dimuon_dr: 
       - dimuon_dr
     dimuon_deta: 
