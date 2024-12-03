@@ -79,3 +79,24 @@ def select_dileptons(objects, key):
     dileptons["z"] = dileptons.l1 + dileptons.l2
     dileptons["pt"] = dileptons.z.pt
     return dileptons
+
+def select_dijet(objects, key):
+    jets = ak.zip(
+        {
+            "pt": objects[key].pt,
+            "eta": objects[key].eta,
+            "phi": objects[key].phi,
+            "mass": objects[key].mass,
+            "charge": objects[key].charge,
+        },
+        with_name="PtEtaPhiMCandidate",
+        behavior=candidate.behavior,
+    )
+    # make sure they are sorted by transverse momentum
+    jets = jets[ak.argsort(jets.pt, axis=1)]
+    # create pair combinations with all muons
+    dijet = ak.combinations(objects[key], 2, fields=["j1", "j2"])
+    # add dimuon 4-momentum field
+    dijet["H"] = dijet.j1 + dijet.j2
+    dijet["pt"] = dijet.H.pt
+    return dijet
