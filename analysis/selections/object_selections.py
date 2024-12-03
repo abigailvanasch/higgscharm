@@ -4,7 +4,7 @@ import awkward as ak
 
 from coffea.nanoevents.methods.vector import LorentzVector
 from analysis.working_points import working_points
-from analysis.selections import delta_r_mask, select_dileptons #, select_dijet
+from analysis.selections import delta_r_mask, select_dileptons, select_dijet
 
 
 class ObjectSelector:
@@ -67,12 +67,10 @@ class ObjectSelector:
             )
         self.objects["dimuons"] = select_dileptons(self.objects, "muons")
 
-     #def select_dijets(self):
-      #  if "jets" not in self.objects:
-       #     raise ValueError(
-        #        f"'jets' object has not been defined!"
-         #   )
-        #self.objects["dijets"] = select_dijet(self.objects, "jets")
+    def select_dijets(self):
+        if "jets" not in self.objects:
+            raise ValueError(f"'jets' object has not been defined!")
+        self.objects["dijets"] = select_dijet(self.objects, "jets")
         
         
     def select_dielectrons(self):
