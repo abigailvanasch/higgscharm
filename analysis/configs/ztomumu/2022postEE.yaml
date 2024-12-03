@@ -34,13 +34,19 @@ object_selection:
       #dr: LorentzVector.delta_r(objects['dimuons'].l1, objects['dimuons'].l2) > 0.02
       opp_charge: objects['dimuons'].l1.charge * objects['dimuons'].l2.charge < 0
       mass_window: (objects['dimuons'].z.mass > 20.0) & (objects['dimuons'].z.mass < 120.0)
+  dijets:
+    field: select_dijets
+    cuts:
+      #dr: LorentzVector.delta_r(objects['dimuons'].l1, objects['dimuons'].l2) > 0.02
+      #opp_charge: objects['dijets'].j1.charge * objects['dimuons'].j2.charge < 0
+      mass_Higgs_window: (objects['dijets'].H.mass > 0) #& (objects['dijets'].H.mass < 300)
 event_selection:
   selections:
     atleast_one_goodvertex: events.PV.npvsGood > 0
     lumimask: get_lumi_mask(events, goldenjson)
     trigger: get_trigger_mask(events, hlt_paths)
     trigger_matching: get_trigger_match_mask(events, events.Muon, hlt_paths)
-    first_muon_pt: ak.firsts(objects['electrons'].pt) > 25
+    first_muon_pt: ak.firsts(objects['muons'].pt) > 25
     two_muons: ak.num(objects['muons']) >= 2
     two_jets: ak.num(events.Jet,axis=1) >=2
     #one_z: ak.num(objects['dimuons'].z) == 1
