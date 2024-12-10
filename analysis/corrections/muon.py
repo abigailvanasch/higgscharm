@@ -195,13 +195,13 @@ class MuonWeights:
                 {nominal, systup, systdown}
         """
         # get muons that pass the id wp, and within SF binning
-        muon_pt_mask = self.flat_muons.pt > 10.0
+        muon_pt_mask = self.flat_muons.pt > 15.0
         muon_eta_mask = np.abs(self.flat_muons.eta) < 2.399
         in_muon_mask = muon_pt_mask & muon_eta_mask & self.muon_id_mask
         in_muons = self.flat_muons.mask[in_muon_mask]
 
         # get muons pT and abseta (replace None values with some 'in-limit' value)
-        muon_pt = ak.fill_none(in_muons.pt, 10.0)
+        muon_pt = ak.fill_none(in_muons.pt, 15.0)
         muon_eta = np.abs(ak.fill_none(in_muons.eta, 0.0))
 
         weights = unflat_sf(
@@ -225,7 +225,7 @@ class MuonWeights:
                 {nominal, systup, systdown}
         """
         # get 'in-limits' muons
-        muon_pt_mask = self.flat_muons.pt > 10
+        muon_pt_mask = self.flat_muons.pt > 15
         muon_eta_mask = np.abs(self.flat_muons.eta) < 2.399
         in_muon_mask = (
             muon_pt_mask & muon_eta_mask & self.muon_id_mask & self.muon_iso_mask
@@ -233,7 +233,7 @@ class MuonWeights:
         in_muons = self.flat_muons.mask[in_muon_mask]
 
         # get muons pT and abseta (replace None values with some 'in-limit' value)
-        muon_pt = ak.fill_none(in_muons.pt, 10)
+        muon_pt = ak.fill_none(in_muons.pt, 15)
         muon_eta = np.abs(ak.fill_none(in_muons.eta, 0.0))
 
         weights = unflat_sf(
